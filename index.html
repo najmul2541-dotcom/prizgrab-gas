@@ -906,8 +906,13 @@
     Updated Affiliate Link Configuration 
   -->
   <script>
-    const AFFILIATE_URL = "https://linkthem.net/?offer_id=4824&aff_id=207733&source=post-fb&s1=post-fb";
-  </script>
+  const BUTTON_LINKS = {
+    header: "https://linkthem.net/?offer_id=4824&aff_id=207733&source=post-fb&s1=post-fb",
+    hero: "https://linkthem.net/?offer_id=4824&aff_id=207733&source=fb&s1=fb",
+    fuel: "https://linkthem.net/?offer_id=4824&aff_id=207733&source=organic-fb&s1=organic-fb",
+    final: "https://linkthem.net/?offer_id=4824&aff_id=207733&source=facebook&s1=facebook"
+  };
+</script>
 
   <header class="site-header">
     <div class="container nav">
@@ -925,7 +930,7 @@
         <a href="#details">Gift Card Details</a>
         <a href="#how-it-works">How It Works</a>
         <a href="#faq">FAQ</a>
-        <a class="button" data-affiliate-link href="#">Enter Giveaway</a>
+        <a class="button" data-button-link="header" href="#">Enter Giveaway</a>
       </nav>
     </div>
   </header>
@@ -942,7 +947,7 @@
           </p>
 
           <div class="hero-actions">
-            <a class="button" data-affiliate-link href="#">
+            <a class="button" data-button-link="hero" href="#">
               Enter for a Chance to Win
             </a>
             <a class="button secondary" href="#how-it-works">
@@ -1112,7 +1117,7 @@
           </p>
 
           <div style="margin-top: 25px;">
-            <a class="button" data-affiliate-link href="#">Check Eligibility</a>
+            <a class="button" data-button-link="fuel" href="#">Check Eligibility</a>
           </div>
         </div>
       </div>
@@ -1252,7 +1257,7 @@
           Review the official terms and check whether you meet the requirements
           before choosing to enter. Winning is not guaranteed.
         </p>
-        <a class="button" data-affiliate-link href="#">Check Eligibility</a>
+        <a class="button" data-button-link="final" href="#">Check Eligibility</a>
       </div>
     </section>
   </main>
@@ -1324,48 +1329,17 @@
   </div>
 
   <script>
-    // Apply the same affiliate URL to every giveaway CTA.
-    document.querySelectorAll("[data-affiliate-link]").forEach((link) => {
-      link.href = AFFILIATE_URL;
-      link.target = "_blank";
-      link.rel = "noopener noreferrer sponsored";
-    });
+    // Apply separate URLs to each CTA button.
+document.querySelectorAll("[data-button-link]").forEach((link) => {
+  const buttonName = link.dataset.buttonLink;
+  const buttonUrl = BUTTON_LINKS[buttonName];
 
-    // Mobile navigation.
-    const menuToggle = document.querySelector(".menu-toggle");
-    const navLinks = document.querySelector(".nav-links");
-
-    menuToggle.addEventListener("click", () => {
-      const isOpen = navLinks.classList.toggle("open");
-      menuToggle.setAttribute("aria-expanded", String(isOpen));
-    });
-
-    document.querySelectorAll(".nav-links a").forEach((link) => {
-      link.addEventListener("click", () => {
-        navLinks.classList.remove("open");
-        menuToggle.setAttribute("aria-expanded", "false");
-      });
-    });
-
-    // Reveal sections as they enter the viewport.
-    const revealItems = document.querySelectorAll(".reveal");
-
-    const revealObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-            revealObserver.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.12 }
-    );
-
-    revealItems.forEach((item) => revealObserver.observe(item));
-
-    // Current year.
-    document.getElementById("year").textContent = new Date().getFullYear();
+  if (buttonUrl && buttonUrl !== "YOUR_" + buttonName.toUpperCase() + "_LINK") {
+    link.href = buttonUrl;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer sponsored";
+  }
+});
   </script>
 </body>
 </html>
